@@ -1,0 +1,6 @@
+{
+  "class_mapping": {
+    "0": "healthy",
+    "1": "sick"
+  }
+}

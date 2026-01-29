@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>ML API</title>
+  <style>
+    body { font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial; margin: 40px; }
+    .card { max-width: 560px; padding: 20px; border: 1px solid #ddd; border-radius: 12px; }
+    .row { margin-top: 12px; }
+    button { padding: 10px 14px; border-radius: 10px; border: 1px solid #ccc; cursor: pointer; }
+    input { padding: 8px; }
+    .result { margin-top: 16px; padding: 12px; background: #f7f7f7; border-radius: 10px; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <h2>Завантаж фото → отримай вердикт</h2>
+
+    <form action="/predict" method="post" enctype="multipart/form-data">
+      <div class="row">
+        <input type="file" name="file" accept="image/*" required />
+      </div>
+      <div class="row">
+        <button type="submit">Predict</button>
+      </div>
+    </form>
+
+    {% if result %}
+      <div class="result">
+        <div><b>Label:</b> {{ result.label }}</div>
+        <div><b>Confidence:</b> {{ "%.4f"|format(result.confidence) }}</div>
+        {% if result.topk %}
+          <div style="margin-top:10px;"><b>Top-K:</b></div>
+          <ul>
+            {% for item in result.topk %}
+              <li>{{ item.label }} — {{ "%.4f"|format(item.confidence) }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+</body>
+</html>
